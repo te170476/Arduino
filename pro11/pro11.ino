@@ -1,4 +1,4 @@
-#include <Pro.h>
+#include "Pro.h"
 
 int leds[] = {5, 6, 7};
 int ledLength = sizeof(leds);

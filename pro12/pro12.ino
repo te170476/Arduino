@@ -1,32 +1,23 @@
-#include "Pro.h"
+#include <Pro.h>
+#include <Counter.h>
 
 int leds[] = {5, 6, 7};
 int ledLength = sizeof(leds);
-
+Counter counter(0, 3, 3, true); //= Counter::FromStepSize(0, 3, 1);
 void setup() {
-  // put your setup code here, to run once:
   pinMode(leds, OUTPUT);
+  counter.dec();
+  Serial.begin(9600);
 }
 
-int pinIndex = 0;
+
 void loop() {
-  // put your main code here, to run repeatedly:
-  int pinBeforeIndex = getBeforeIndex(pinIndex);
-  digitalWrite(leds[pinBeforeIndex], LOW );
-  digitalWrite(leds[pinIndex]      , HIGH);
-  pinIndex = getIncedIndex(pinIndex);
+  int before = counter.state;
+  counter.inc();
+  int current = counter.state;
+  digitalWrite(leds[before] , LOW );
+  digitalWrite(leds[current], HIGH);
   delay(1000);
-}
-int getBeforeIndex(int index){
-  int before = index -1;
-  if (before < 0)
-    before += ledLength;
-  return before;
-}
-int getIncedIndex(int index){
-  int inced = index + 1;
-  if (inced >= ledLength)
-    inced -= ledLength;
-  return inced;
+  Serial.println(current);
 }
 

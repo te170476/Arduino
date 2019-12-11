@@ -13,10 +13,11 @@ Pulser::Pulser(int pin, int turnOffDelay){
 PulseState Pulser::tryPulse(int inputPin, PulseState beforeState){
   int digitalInput = digitalRead(inputPin);
   if(digitalInput == LOW) {
-    delay(m_turnOffDelay);
     return PulseState::OFF;
   }
-  if(beforeState != PulseState::OFF) return PulseState::AlreadyPulsed;
+  if(beforeState != PulseState::OFF) {
+    return PulseState::AlreadyPulsed;
+  }
   return PulseState::Pulse;
 }
 PulseState Pulser::pulse(){

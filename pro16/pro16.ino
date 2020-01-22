@@ -1,27 +1,18 @@
+#include <Sensor.h>
 
 int led = 6;
-int temperatureSensor = 0;
+int sensorPin = 0;
 
 void setup() {
   pinMode(led, OUTPUT);
   Serial.begin(9600);
 }
 
+Sensor thermoSensor(sensorPin, 5000, 1023, 300, 1600, -30, 100);
 void loop() {
   int targetTemprature = 28;
-  int tempratureSensorState = analogRead(temperatureSensor);
-  int m_minVoltage = 300;
-  int m_maxVoltage = 1600;
-  int m_minTemprature = -30;
-  int m_maxTemprature = 100;
-  int m_voltageStep = (m_maxVoltage - m_minVoltage) / (m_maxTemprature - m_minTemprature);
-  int m_voltageWhenZeroTemprature = m_minVoltage + (m_voltageStep * (0 - m_minTemprature));
-
-  int standardVoltage = 5000;
-  int m_resolution = 1023;
-  double inputVoltageStep = (double)standardVoltage / m_resolution;
-  double inputVoltage = tempratureSensorState * inputVoltageStep;
-  int inputTemprature = (inputVoltage - m_voltageWhenZeroTemprature)/ m_voltageStep;
+  int tempratureSensorState = analogRead(sensorPin);
+  int inputTemprature = thermoSensor.read();
   Serial.print(tempratureSensorState);
   Serial.print("  ");
   Serial.println(inputTemprature);
@@ -30,5 +21,4 @@ void loop() {
     digitalWrite(led, HIGH);
   else
     digitalWrite(led, LOW);
-    
 }
